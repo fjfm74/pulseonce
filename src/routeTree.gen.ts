@@ -9,16 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as LeaguesRouteImport } from './routes/leagues'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LineupsNewRouteImport } from './routes/lineups.new'
+import { Route as LeaguesJoinRouteImport } from './routes/leagues.join'
+import { Route as LeaguesCreateRouteImport } from './routes/leagues.create'
+import { Route as LeaguesCodeRouteImport } from './routes/leagues.$code'
 import { Route as CCodeRouteImport } from './routes/c.$code'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaguesRoute = LeaguesRouteImport.update({
+  id: '/leagues',
+  path: '/leagues',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -36,6 +51,21 @@ const LineupsNewRoute = LineupsNewRouteImport.update({
   path: '/lineups/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LeaguesJoinRoute = LeaguesJoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => LeaguesRoute,
+} as any)
+const LeaguesCreateRoute = LeaguesCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => LeaguesRoute,
+} as any)
+const LeaguesCodeRoute = LeaguesCodeRouteImport.update({
+  id: '/$code',
+  path: '/$code',
+  getParentRoute: () => LeaguesRoute,
+} as any)
 const CCodeRoute = CCodeRouteImport.update({
   id: '/c/$code',
   path: '/c/$code',
@@ -50,26 +80,41 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
   '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
   '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
   '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRouteTypes {
@@ -77,32 +122,49 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/leagues'
     | '/onboarding'
+    | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
     | '/lineups/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/leagues'
     | '/onboarding'
+    | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
     | '/lineups/new'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/leagues'
     | '/onboarding'
+    | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
     | '/lineups/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  LeaguesRoute: typeof LeaguesRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
+  SettingsRoute: typeof SettingsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   CCodeRoute: typeof CCodeRoute
   LineupsNewRoute: typeof LineupsNewRoute
@@ -110,11 +172,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leagues': {
+      id: '/leagues'
+      path: '/leagues'
+      fullPath: '/leagues'
+      preLoaderRoute: typeof LeaguesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -138,6 +214,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LineupsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/leagues/join': {
+      id: '/leagues/join'
+      path: '/join'
+      fullPath: '/leagues/join'
+      preLoaderRoute: typeof LeaguesJoinRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
+    '/leagues/create': {
+      id: '/leagues/create'
+      path: '/create'
+      fullPath: '/leagues/create'
+      preLoaderRoute: typeof LeaguesCreateRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
+    '/leagues/$code': {
+      id: '/leagues/$code'
+      path: '/$code'
+      fullPath: '/leagues/$code'
+      preLoaderRoute: typeof LeaguesCodeRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
     '/c/$code': {
       id: '/c/$code'
       path: '/c/$code'
@@ -155,10 +252,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LeaguesRouteChildren {
+  LeaguesCodeRoute: typeof LeaguesCodeRoute
+  LeaguesCreateRoute: typeof LeaguesCreateRoute
+  LeaguesJoinRoute: typeof LeaguesJoinRoute
+}
+
+const LeaguesRouteChildren: LeaguesRouteChildren = {
+  LeaguesCodeRoute: LeaguesCodeRoute,
+  LeaguesCreateRoute: LeaguesCreateRoute,
+  LeaguesJoinRoute: LeaguesJoinRoute,
+}
+
+const LeaguesRouteWithChildren =
+  LeaguesRoute._addFileChildren(LeaguesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  LeaguesRoute: LeaguesRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
+  SettingsRoute: SettingsRoute,
   AuthLoginRoute: AuthLoginRoute,
   CCodeRoute: CCodeRoute,
   LineupsNewRoute: LineupsNewRoute,
