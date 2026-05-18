@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LeaguesRouteImport } from './routes/leagues'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -29,6 +30,11 @@ import { Route as AuthLoginRouteImport } from './routes/auth.login'
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/leagues': typeof LeaguesRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/leagues'
     | '/onboarding'
+    | '/reset-password'
     | '/settings'
     | '/auth/login'
     | '/c/$code'
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/leagues'
     | '/onboarding'
+    | '/reset-password'
     | '/settings'
     | '/auth/login'
     | '/c/$code'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/leagues'
     | '/onboarding'
+    | '/reset-password'
     | '/settings'
     | '/auth/login'
     | '/c/$code'
@@ -224,6 +236,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LeaguesRoute: typeof LeaguesRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   CCodeRoute: typeof CCodeRoute
@@ -242,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -372,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LeaguesRoute: LeaguesRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
   AuthLoginRoute: AuthLoginRoute,
   CCodeRoute: CCodeRoute,
