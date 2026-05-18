@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/c/$code")({
   head: ({ params }) => ({ meta: [
-    { title: `Carta ${params.code} · Pulse11` },
+    { title: `Carta /${params.code} · Pulse11` },
     { name: "description", content: "Una carta de 11 ideal en Pulse11." },
     { property: "og:title", content: `Pulse11 · /${params.code}` },
   ]}),
@@ -31,6 +31,7 @@ function CardView() {
   const [authorIdSelf, setAuthorIdSelf] = useState(false);
   const [pulseado, setPulseado] = useState(false);
   const [pulses, setPulses] = useState(0);
+  const [pop, setPop] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
@@ -44,8 +45,22 @@ function CardView() {
     }
   }, [q.data, authed, hasPulsedFn]);
 
-  if (q.isLoading) return <div className="min-h-screen"><Nav /><div className="p-12 text-center text-muted-foreground">Pintando tu carta…</div></div>;
-  if (!q.data) return <div className="min-h-screen"><Nav /><div className="p-12 text-center">Carta no encontrada</div></div>;
+  if (q.isLoading) return (
+    <div className="min-h-screen flex flex-col"><Nav />
+      <div className="flex-1 grid place-items-center"><div className="display text-6xl wiggle">PINTANDO TU CARTA…</div></div>
+    </div>
+  );
+  if (!q.data) return (
+    <div className="min-h-screen flex flex-col"><Nav />
+      <div className="flex-1 grid place-items-center text-center px-6">
+        <div>
+          <div className="display text-[24vw] sm:text-[14rem] leading-none text-stroke">404</div>
+          <div className="tape mt-4">CARTA NO ENCONTRADA</div>
+          <div className="mt-6"><Link to="/" className="btn-hero">VOLVER</Link></div>
+        </div>
+      </div>
+    </div>
+  );
 
   const lu = q.data.lineup;
   const players = q.data.players;
@@ -63,6 +78,7 @@ function CardView() {
       const r = await togglePulseFn({ data: { lineup_id: lu.id }});
       setPulseado(r.pulseado);
       setPulses(p => p + (r.pulseado ? 1 : -1));
+      if (r.pulseado) { setPop(true); setTimeout(() => setPop(false), 600); }
     } catch (e) { toast.error((e as Error).message); }
   };
 
@@ -77,59 +93,130 @@ function CardView() {
     router.navigate({ to: "/lineups/new" });
   };
 
+  const fechaShort = new Date(lu.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }).toUpperCase();
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col noise-grad">
       <Nav />
-      <div className="flex-1 max-w-5xl mx-auto px-4 py-8 w-full">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <div className="tape mb-2">CARTA · /{lu.code}</div>
-            <h1 className="display text-5xl">{lu.title}</h1>
-            <div className="mt-1 text-sm text-muted-foreground font-mono uppercase tracking-wider">
-              {mode?.name} · {lu.formation}
-              {author && <> · por <Link to="/u/$username" params={{ username: author.username }} className="text-primary hover:underline">{getAvatar(author.avatar_id).emoji} {author.username}</Link></>}
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button onClick={onPulse} disabled={authorIdSelf}
-              className={`btn-hero ${pulseado ? '!bg-accent !text-accent-foreground' : ''} disabled:opacity-40`}>
-              {pulseado ? `PULSEADO · ${pulses}` : `PULSE · ${pulses}`}
-            </button>
-            <button onClick={fork} className="btn-ghost-zine">Hacer mi versión</button>
-            <button onClick={share} className="btn-ghost-zine">Compartir</button>
-          </div>
-        </div>
 
-        <div className="grid lg:grid-cols-[1fr_320px] gap-6 mt-6">
-          <Pitch>
-            {slots.map(s => {
-              const slotDef = layout.find(l => l.slot === s.slot);
-              const p = playerById(s.player_id);
-              if (!slotDef || !p) return null;
-              const idx = slots.findIndex(x => x.slot === s.slot);
-              return <MiniCard key={s.slot} slot={slotDef} player={p} jersey={idx + 1} />;
-            })}
-          </Pitch>
-
-          <aside className="border-2 border-foreground bg-surface p-4">
-            <div className="display text-2xl mb-2">LISTA</div>
-            <ol className="space-y-1 font-mono text-sm">
-              {slots.map((s, i) => {
-                const p = playerById(s.player_id);
-                return (
-                  <li key={s.slot} className="flex justify-between border-b border-border py-1">
-                    <span><span className="text-muted-foreground w-10 inline-block">{s.slot}</span> {p?.name}</span>
-                    <span>{p?.nationality}</span>
-                  </li>
-                );
-              })}
-            </ol>
-            <div className="mt-4 font-mono text-xs text-muted-foreground">
-              FORKS: {lu.forks_count}
-            </div>
-          </aside>
+      {/* Marquee status */}
+      <div className="marquee magenta">
+        <div>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <span key={i}>★ CARTA /{lu.code} &nbsp; · &nbsp; {pulses} PULSES &nbsp; · &nbsp; {lu.forks_count} FORKS &nbsp; · &nbsp; {mode?.name?.toUpperCase()} &nbsp; · &nbsp;</span>
+          ))}
         </div>
       </div>
+
+      <div className="flex-1 max-w-6xl mx-auto px-4 py-10 w-full">
+        {/* Ghost code */}
+        <div className="relative">
+          <div className="absolute -top-6 -right-2 sm:-right-6 stencil text-[28vw] sm:text-[16rem] leading-none opacity-30 pointer-events-none select-none">
+            /{lu.code}
+          </div>
+
+          <div className="relative z-10 flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 flex-wrap mb-3">
+                <span className="tape">CARTA · /{lu.code}</span>
+                <span className="tape tape-accent">{lu.formation}</span>
+                <span className="tape tape-magenta">{mode?.name?.toUpperCase()}</span>
+              </div>
+              <h1 className="display text-6xl sm:text-8xl glow-primary text-primary leading-[0.85]">
+                {lu.title}
+              </h1>
+              {author && (
+                <div className="mt-3 font-mono text-sm uppercase tracking-wider">
+                  POR{" "}
+                  <Link to="/u/$username" params={{ username: author.username }} className="text-magenta hover:underline">
+                    {getAvatar(author.avatar_id).emoji} @{author.username}
+                  </Link>
+                  {" "}· {fechaShort}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <button onClick={onPulse} disabled={authorIdSelf}
+                className={`btn-hero ${pulseado ? '!bg-accent !text-accent-foreground' : ''} ${pop ? 'wiggle' : ''} disabled:opacity-40 disabled:cursor-not-allowed`}>
+                {pulseado ? `❤︎ PULSEADO · ${pulses}` : `PULSE · ${pulses}`}
+              </button>
+              <button onClick={fork} className="btn-ghost-zine">FORK</button>
+              <button onClick={share} className="btn-ghost-zine">SHARE</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Pitch + sidebar */}
+        <div className="grid lg:grid-cols-[1fr_360px] gap-6 mt-10">
+          <div className="relative">
+            <div className="absolute -top-3 -left-3 sticker tilt-3 z-20 text-sm">11 IDEAL</div>
+            <div className="absolute -bottom-3 -right-3 sticker tilt-2 z-20 text-sm bg-accent text-accent-foreground border-foreground">{lu.formation}</div>
+            <div className="border-2 border-foreground shadow-brutal-primary scanlines relative">
+              <Pitch>
+                {slots.map(s => {
+                  const slotDef = layout.find(l => l.slot === s.slot);
+                  const p = playerById(s.player_id);
+                  if (!slotDef || !p) return null;
+                  const idx = slots.findIndex(x => x.slot === s.slot);
+                  return <MiniCard key={s.slot} slot={slotDef} player={p} jersey={idx + 1} />;
+                })}
+              </Pitch>
+            </div>
+          </div>
+
+          <aside className="space-y-4">
+            {/* Stats brutalist */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="border-2 border-foreground bg-primary text-primary-foreground p-3 shadow-brutal">
+                <div className="text-xs font-mono uppercase opacity-70">Pulses</div>
+                <div className="display text-5xl leading-none mt-1">{pulses}</div>
+              </div>
+              <div className="border-2 border-foreground bg-accent text-accent-foreground p-3 shadow-brutal">
+                <div className="text-xs font-mono uppercase opacity-70">Forks</div>
+                <div className="display text-5xl leading-none mt-1">{lu.forks_count}</div>
+              </div>
+            </div>
+
+            {/* Lista */}
+            <div className="border-2 border-foreground bg-surface shadow-brutal">
+              <div className="bg-foreground text-background px-3 py-1.5 flex items-center justify-between">
+                <span className="display text-xl tracking-wider">PLANTILLA</span>
+                <span className="font-mono text-[10px]">11/11</span>
+              </div>
+              <ol className="divide-y divide-border">
+                {slots.map((s, i) => {
+                  const p = playerById(s.player_id);
+                  return (
+                    <li key={s.slot} className="flex items-center justify-between px-3 py-1.5 font-mono text-xs hover:bg-surface-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="display text-base w-6 text-magenta">{i + 1}</span>
+                        <span className="bg-foreground text-background px-1.5 py-0.5 text-[10px] w-10 text-center">{s.slot}</span>
+                        <span className="truncate">{p?.name}</span>
+                      </div>
+                      <span className="text-muted-foreground shrink-0">{p?.nationality}</span>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+
+            {/* CTA */}
+            {!authed && (
+              <Link to="/auth/login" className="block border-2 border-dashed border-magenta p-3 text-center font-mono text-xs uppercase hover:bg-magenta hover:text-white transition">
+                Entra para pulsar y forkear esta carta
+              </Link>
+            )}
+          </aside>
+        </div>
+
+        {/* Big stencil mode footer */}
+        <div className="mt-16 text-center">
+          <div className="stencil text-[18vw] sm:text-[10rem] leading-none">PULSE11</div>
+          <div className="font-mono text-xs uppercase tracking-[0.4em] text-muted-foreground -mt-2">El football se vive en cartas</div>
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
