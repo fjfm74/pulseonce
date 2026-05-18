@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LineupsNewRouteImport } from './routes/lineups.new'
+import { Route as CCodeRouteImport } from './routes/c.$code'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -29,6 +31,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LineupsNewRoute = LineupsNewRouteImport.update({
+  id: '/lineups/new',
+  path: '/lineups/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CCodeRoute = CCodeRouteImport.update({
+  id: '/c/$code',
+  path: '/c/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
@@ -40,12 +52,16 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/onboarding': typeof OnboardingRoute
   '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/onboarding': typeof OnboardingRoute
   '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +69,34 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/onboarding': typeof OnboardingRoute
   '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/lineups/new': typeof LineupsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/onboarding' | '/auth/login'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/auth/login'
+    | '/c/$code'
+    | '/lineups/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/onboarding' | '/auth/login'
-  id: '__root__' | '/' | '/dashboard' | '/onboarding' | '/auth/login'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/auth/login'
+    | '/c/$code'
+    | '/lineups/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/auth/login'
+    | '/c/$code'
+    | '/lineups/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +104,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   OnboardingRoute: typeof OnboardingRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  CCodeRoute: typeof CCodeRoute
+  LineupsNewRoute: typeof LineupsNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +131,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lineups/new': {
+      id: '/lineups/new'
+      path: '/lineups/new'
+      fullPath: '/lineups/new'
+      preLoaderRoute: typeof LineupsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/c/$code': {
+      id: '/c/$code'
+      path: '/c/$code'
+      fullPath: '/c/$code'
+      preLoaderRoute: typeof CCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -107,6 +160,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   OnboardingRoute: OnboardingRoute,
   AuthLoginRoute: AuthLoginRoute,
+  CCodeRoute: CCodeRoute,
+  LineupsNewRoute: LineupsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
