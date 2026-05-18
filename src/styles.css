@@ -43,8 +43,8 @@
   --color-pitch-line: var(--pitch-line);
   --color-tape: var(--tape);
 
-  --font-display: 'Bebas Neue', 'Archivo Narrow', sans-serif;
-  --font-sans: 'Archivo Narrow', system-ui, sans-serif;
+  --font-display: 'Anton', 'Bebas Neue', 'Archivo Narrow', sans-serif;
+  --font-sans: 'Space Grotesk', 'Archivo Narrow', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
