@@ -14,7 +14,12 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LeaguesRouteImport } from './routes/leagues'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UUsernameRouteImport } from './routes/u.$username'
+import { Route as ModesSlugRouteImport } from './routes/modes.$slug'
 import { Route as LineupsNewRouteImport } from './routes/lineups.new'
+import { Route as LegalTerminosRouteImport } from './routes/legal.terminos'
+import { Route as LegalPrivacidadRouteImport } from './routes/legal.privacidad'
+import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
 import { Route as LeaguesJoinRouteImport } from './routes/leagues.join'
 import { Route as LeaguesCreateRouteImport } from './routes/leagues.create'
 import { Route as LeaguesCodeRouteImport } from './routes/leagues.$code'
@@ -46,9 +51,34 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UUsernameRoute = UUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesSlugRoute = ModesSlugRouteImport.update({
+  id: '/modes/$slug',
+  path: '/modes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LineupsNewRoute = LineupsNewRouteImport.update({
   id: '/lineups/new',
   path: '/lineups/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTerminosRoute = LegalTerminosRouteImport.update({
+  id: '/legal/terminos',
+  path: '/legal/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacidadRoute = LegalPrivacidadRouteImport.update({
+  id: '/legal/privacidad',
+  path: '/legal/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalCookiesRoute = LegalCookiesRouteImport.update({
+  id: '/legal/cookies',
+  path: '/legal/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaguesJoinRoute = LeaguesJoinRouteImport.update({
@@ -88,7 +118,12 @@ export interface FileRoutesByFullPath {
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
   '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,7 +136,12 @@ export interface FileRoutesByTo {
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
   '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,7 +155,12 @@ export interface FileRoutesById {
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
   '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,7 +175,12 @@ export interface FileRouteTypes {
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
     | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -143,7 +193,12 @@ export interface FileRouteTypes {
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
     | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
   id:
     | '__root__'
     | '/'
@@ -156,7 +211,12 @@ export interface FileRouteTypes {
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
     | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -167,7 +227,12 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   CCodeRoute: typeof CCodeRoute
+  LegalCookiesRoute: typeof LegalCookiesRoute
+  LegalPrivacidadRoute: typeof LegalPrivacidadRoute
+  LegalTerminosRoute: typeof LegalTerminosRoute
   LineupsNewRoute: typeof LineupsNewRoute
+  ModesSlugRoute: typeof ModesSlugRoute
+  UUsernameRoute: typeof UUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -207,11 +272,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/u/$username': {
+      id: '/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof UUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$slug': {
+      id: '/modes/$slug'
+      path: '/modes/$slug'
+      fullPath: '/modes/$slug'
+      preLoaderRoute: typeof ModesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lineups/new': {
       id: '/lineups/new'
       path: '/lineups/new'
       fullPath: '/lineups/new'
       preLoaderRoute: typeof LineupsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/terminos': {
+      id: '/legal/terminos'
+      path: '/legal/terminos'
+      fullPath: '/legal/terminos'
+      preLoaderRoute: typeof LegalTerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacidad': {
+      id: '/legal/privacidad'
+      path: '/legal/privacidad'
+      fullPath: '/legal/privacidad'
+      preLoaderRoute: typeof LegalPrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/cookies': {
+      id: '/legal/cookies'
+      path: '/legal/cookies'
+      fullPath: '/legal/cookies'
+      preLoaderRoute: typeof LegalCookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leagues/join': {
@@ -275,7 +375,12 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   AuthLoginRoute: AuthLoginRoute,
   CCodeRoute: CCodeRoute,
+  LegalCookiesRoute: LegalCookiesRoute,
+  LegalPrivacidadRoute: LegalPrivacidadRoute,
+  LegalTerminosRoute: LegalTerminosRoute,
   LineupsNewRoute: LineupsNewRoute,
+  ModesSlugRoute: ModesSlugRoute,
+  UUsernameRoute: UUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
