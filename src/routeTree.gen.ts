@@ -9,38 +9,262 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as LeaguesRouteImport } from './routes/leagues'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UUsernameRouteImport } from './routes/u.$username'
+import { Route as ModesSlugRouteImport } from './routes/modes.$slug'
+import { Route as LineupsNewRouteImport } from './routes/lineups.new'
+import { Route as LegalTerminosRouteImport } from './routes/legal.terminos'
+import { Route as LegalPrivacidadRouteImport } from './routes/legal.privacidad'
+import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
+import { Route as LeaguesJoinRouteImport } from './routes/leagues.join'
+import { Route as LeaguesCreateRouteImport } from './routes/leagues.create'
+import { Route as LeaguesCodeRouteImport } from './routes/leagues.$code'
+import { Route as CCodeRouteImport } from './routes/c.$code'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaguesRoute = LeaguesRouteImport.update({
+  id: '/leagues',
+  path: '/leagues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UUsernameRoute = UUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesSlugRoute = ModesSlugRouteImport.update({
+  id: '/modes/$slug',
+  path: '/modes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LineupsNewRoute = LineupsNewRouteImport.update({
+  id: '/lineups/new',
+  path: '/lineups/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTerminosRoute = LegalTerminosRouteImport.update({
+  id: '/legal/terminos',
+  path: '/legal/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacidadRoute = LegalPrivacidadRouteImport.update({
+  id: '/legal/privacidad',
+  path: '/legal/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalCookiesRoute = LegalCookiesRouteImport.update({
+  id: '/legal/cookies',
+  path: '/legal/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaguesJoinRoute = LeaguesJoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => LeaguesRoute,
+} as any)
+const LeaguesCreateRoute = LeaguesCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => LeaguesRoute,
+} as any)
+const LeaguesCodeRoute = LeaguesCodeRouteImport.update({
+  id: '/$code',
+  path: '/$code',
+  getParentRoute: () => LeaguesRoute,
+} as any)
+const CCodeRoute = CCodeRouteImport.update({
+  id: '/c/$code',
+  path: '/c/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
+  '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
+  '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/leagues': typeof LeaguesRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/c/$code': typeof CCodeRoute
+  '/leagues/$code': typeof LeaguesCodeRoute
+  '/leagues/create': typeof LeaguesCreateRoute
+  '/leagues/join': typeof LeaguesJoinRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/privacidad': typeof LegalPrivacidadRoute
+  '/legal/terminos': typeof LegalTerminosRoute
+  '/lineups/new': typeof LineupsNewRoute
+  '/modes/$slug': typeof ModesSlugRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/leagues'
+    | '/onboarding'
+    | '/settings'
+    | '/auth/login'
+    | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
+    | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/leagues'
+    | '/onboarding'
+    | '/settings'
+    | '/auth/login'
+    | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
+    | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/leagues'
+    | '/onboarding'
+    | '/settings'
+    | '/auth/login'
+    | '/c/$code'
+    | '/leagues/$code'
+    | '/leagues/create'
+    | '/leagues/join'
+    | '/legal/cookies'
+    | '/legal/privacidad'
+    | '/legal/terminos'
+    | '/lineups/new'
+    | '/modes/$slug'
+    | '/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
+  LeaguesRoute: typeof LeaguesRouteWithChildren
+  OnboardingRoute: typeof OnboardingRoute
+  SettingsRoute: typeof SettingsRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  CCodeRoute: typeof CCodeRoute
+  LegalCookiesRoute: typeof LegalCookiesRoute
+  LegalPrivacidadRoute: typeof LegalPrivacidadRoute
+  LegalTerminosRoute: typeof LegalTerminosRoute
+  LineupsNewRoute: typeof LineupsNewRoute
+  ModesSlugRoute: typeof ModesSlugRoute
+  UUsernameRoute: typeof UUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leagues': {
+      id: '/leagues'
+      path: '/leagues'
+      fullPath: '/leagues'
+      preLoaderRoute: typeof LeaguesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +272,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/u/$username': {
+      id: '/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof UUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$slug': {
+      id: '/modes/$slug'
+      path: '/modes/$slug'
+      fullPath: '/modes/$slug'
+      preLoaderRoute: typeof ModesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lineups/new': {
+      id: '/lineups/new'
+      path: '/lineups/new'
+      fullPath: '/lineups/new'
+      preLoaderRoute: typeof LineupsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/terminos': {
+      id: '/legal/terminos'
+      path: '/legal/terminos'
+      fullPath: '/legal/terminos'
+      preLoaderRoute: typeof LegalTerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacidad': {
+      id: '/legal/privacidad'
+      path: '/legal/privacidad'
+      fullPath: '/legal/privacidad'
+      preLoaderRoute: typeof LegalPrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/cookies': {
+      id: '/legal/cookies'
+      path: '/legal/cookies'
+      fullPath: '/legal/cookies'
+      preLoaderRoute: typeof LegalCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leagues/join': {
+      id: '/leagues/join'
+      path: '/join'
+      fullPath: '/leagues/join'
+      preLoaderRoute: typeof LeaguesJoinRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
+    '/leagues/create': {
+      id: '/leagues/create'
+      path: '/create'
+      fullPath: '/leagues/create'
+      preLoaderRoute: typeof LeaguesCreateRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
+    '/leagues/$code': {
+      id: '/leagues/$code'
+      path: '/$code'
+      fullPath: '/leagues/$code'
+      preLoaderRoute: typeof LeaguesCodeRouteImport
+      parentRoute: typeof LeaguesRoute
+    }
+    '/c/$code': {
+      id: '/c/$code'
+      path: '/c/$code'
+      fullPath: '/c/$code'
+      preLoaderRoute: typeof CCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface LeaguesRouteChildren {
+  LeaguesCodeRoute: typeof LeaguesCodeRoute
+  LeaguesCreateRoute: typeof LeaguesCreateRoute
+  LeaguesJoinRoute: typeof LeaguesJoinRoute
+}
+
+const LeaguesRouteChildren: LeaguesRouteChildren = {
+  LeaguesCodeRoute: LeaguesCodeRoute,
+  LeaguesCreateRoute: LeaguesCreateRoute,
+  LeaguesJoinRoute: LeaguesJoinRoute,
+}
+
+const LeaguesRouteWithChildren =
+  LeaguesRoute._addFileChildren(LeaguesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
+  LeaguesRoute: LeaguesRouteWithChildren,
+  OnboardingRoute: OnboardingRoute,
+  SettingsRoute: SettingsRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  CCodeRoute: CCodeRoute,
+  LegalCookiesRoute: LegalCookiesRoute,
+  LegalPrivacidadRoute: LegalPrivacidadRoute,
+  LegalTerminosRoute: LegalTerminosRoute,
+  LineupsNewRoute: LineupsNewRoute,
+  ModesSlugRoute: ModesSlugRoute,
+  UUsernameRoute: UUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
