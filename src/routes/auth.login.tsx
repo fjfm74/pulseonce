@@ -15,7 +15,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<"idle" | "login" | "signup" | "magic" | "reset">("idle");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -25,38 +25,79 @@ function Login() {
 
   const submitPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    // Try sign-in first; if user doesn't exist, sign up (auto-confirm is on)
-    let { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error && /invalid login credentials/i.test(error.message)) {
-      const up = await supabase.auth.signUp({
-        email,
-        password,
-        options: { emailRedirectTo: window.location.origin + "/onboarding" },
-      });
-      if (up.error) { setLoading(false); toast.error(up.error.message); return; }
-      // If session was created (auto-confirm), redirect; else inform
-      if (up.data.session) {
-        toast.success("¡Cuenta creada!");
-        router.navigate({ to: "/onboarding" });
+    setLoading("login");
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading("idle");
+    if (error) {
+      toast.error("Email o contraseña incorrectos. Si esa cuenta entró antes con magic link, usa ‘Fijar / recuperar contraseña’.");
+      return;
+    }
+    router.navigate({ to: "/dashboard" });
+  };
+
+  const createAccount = async () => {
+    setLoading("signup");
+    const up = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: window.location.origin + "/onboarding" },
+    });
+
+    if (up.error) {
+      setLoading("idle");
+      if (/already registered/i.test(up.error.message)) {
+        toast.error("Ese email ya existe. Entra con tu contraseña o usa ‘Fijar / recuperar contraseña’.");
         return;
       }
-      toast.success("Cuenta creada, ya puedes entrar");
-      error = null;
+      toast.error(up.error.message);
+      return;
     }
-    setLoading(false);
-    if (error) { toast.error(error.message); return; }
-    router.navigate({ to: "/dashboard" });
+
+    if (up.data.session) {
+      setLoading("idle");
+      toast.success("¡Cuenta creada!");
+      router.navigate({ to: "/onboarding" });
+      return;
+    }
+
+    const login = await supabase.auth.signInWithPassword({ email, password });
+    setLoading("idle");
+    if (login.error) {
+      toast.success("Cuenta creada. Ahora fija tu contraseña desde el email de recuperación si no te deja entrar.");
+      return;
+    }
+
+    toast.success("¡Cuenta creada!");
+    router.navigate({ to: "/onboarding" });
+  };
+
+  const sendReset = async () => {
+    if (!email) {
+      toast.error("Escribe tu email primero");
+      return;
+    }
+
+    setLoading("reset");
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading("idle");
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Te he enviado un email para fijar o recuperar tu contraseña");
   };
 
   const submitMagic = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading("magic");
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: window.location.origin + "/onboarding" },
     });
-    setLoading(false);
+    setLoading("idle");
     if (error) { toast.error(error.message); return; }
     setSent(true);
   };
@@ -150,11 +191,29 @@ function Login() {
                       className="mt-1 w-full bg-input border-2 border-border focus:border-primary outline-none px-4 py-3 display text-xl tracking-widest"
                     />
                   </label>
-                  <button disabled={loading || !email || password.length < 6} className="btn-hero w-full disabled:opacity-30">
-                    {loading ? "ENTRANDO…" : "ENTRAR / CREAR CUENTA →"}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button disabled={loading !== "idle" || !email || password.length < 6} className="btn-hero w-full disabled:opacity-30">
+                      {loading === "login" ? "ENTRANDO…" : "ENTRAR →"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={createAccount}
+                      disabled={loading !== "idle" || !email || password.length < 6}
+                      className="btn-ghost-zine w-full disabled:opacity-30"
+                    >
+                      {loading === "signup" ? "CREANDO…" : "CREAR CUENTA"}
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={sendReset}
+                    disabled={loading !== "idle" || !email}
+                    className="font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-primary disabled:opacity-30"
+                  >
+                    {loading === "reset" ? "ENVIANDO…" : "Fijar / recuperar contraseña"}
                   </button>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    Si el email no existe, te creamos cuenta al momento. Edad mínima <strong className="text-foreground">14 años</strong>.
+                    Si ya entraste alguna vez por magic link, primero fija una contraseña con el enlace de recuperación. Edad mínima <strong className="text-foreground">14 años</strong>.
                   </p>
                 </form>
               ) : sent ? (
@@ -184,8 +243,8 @@ function Login() {
                       className="mt-1 w-full bg-input border-2 border-border focus:border-primary outline-none px-4 py-3 display text-xl"
                     />
                   </label>
-                  <button disabled={loading || !email} className="btn-hero w-full disabled:opacity-30">
-                    {loading ? "ENVIANDO…" : "MANDAR MAGIC LINK →"}
+                  <button disabled={loading !== "idle" || !email} className="btn-hero w-full disabled:opacity-30">
+                    {loading === "magic" ? "ENVIANDO…" : "MANDAR MAGIC LINK →"}
                   </button>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
                     Aviso: el email gratis de Supabase puede tardar / caer en spam. Si urge, usa contraseña.
