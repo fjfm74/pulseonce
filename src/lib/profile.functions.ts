@@ -62,7 +62,7 @@ export const updateProfileSettings = createServerFn({ method: "POST" })
     avatar_id: z.string().min(2).max(20).optional(),
   }).parse(d))
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
+    const patch: { favorite_team_id?: number | null; avatar_id?: string } = {};
     if (data.favorite_team_id !== undefined) patch.favorite_team_id = data.favorite_team_id;
     if (data.avatar_id !== undefined) patch.avatar_id = data.avatar_id;
     const { error } = await supabaseAdmin.from("profiles").update(patch).eq("id", context.userId);
