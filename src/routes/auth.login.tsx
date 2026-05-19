@@ -128,9 +128,9 @@ function Login() {
               Crea tu 11 ideal, compártelo como carta y compite en ligas privadas con tus colegas.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="sticker bg-primary text-primary-foreground border-foreground text-xs">11 IDEAL</span>
-              <span className="sticker bg-accent text-accent-foreground border-foreground text-xs">LIGAS PRIVADAS</span>
-              <span className="sticker bg-magenta text-white border-foreground text-xs">SIN TOXICIDAD</span>
+              <span className="sticker !bg-primary text-primary-foreground border-foreground text-xs">11 IDEAL</span>
+              <span className="sticker !bg-accent text-accent-foreground border-foreground text-xs">LIGAS PRIVADAS</span>
+              <span className="sticker !bg-magenta text-white border-foreground text-xs">SIN TOXICIDAD</span>
             </div>
           </div>
           <div className="relative z-10 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
