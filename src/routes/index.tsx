@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
 
 const MARQUEE_A = "MONTA TU 11 ★ PULSEA LA CARTA ★ GANA TU LIGA ★ SIN APUESTAS ★ SIN TÓXICOS ★ 14+ ★ ";
 const MARQUEE_B = "EL 11 DEL CORAZÓN ✦ SORPRESA DE LA JORNADA ✦ LIGA PRIVADA ✦ CÓDIGO DE 6 LETRAS ✦ ";
-const MARQUEE_C = "BETA ESPAÑA ⚡ MAGIC LINK ⚡ SIN CONTRASEÑA ⚡ MENOS DE 30 SEGUNDOS ⚡ ";
+const MARQUEE_C = "ESPAÑA ⚡ MAGIC LINK ⚡ SIN CONTRASEÑA ⚡ MENOS DE 30 SEGUNDOS ⚡ ";
 
 function Landing() {
   return (
@@ -42,15 +42,15 @@ function Landing() {
             <div className="hidden sm:flex gap-4 text-muted-foreground">
               <span>EST. 2026</span>
               <span>BCN · MAD</span>
-              <span className="text-primary">v0.1 BETA</span>
+              <span className="text-primary">v0.1</span>
             </div>
           </div>
 
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-7 relative">
               <div className="flex items-center gap-3 mb-5">
-                <div className="tape">EDICIÓN BETA · ESPAÑA</div>
-                <div className="tape tape-magenta">14–18 AÑOS</div>
+                <div className="tape">EDICIÓN ESPAÑA</div>
+                <div className="tape tape-magenta">SOLO FÚTBOL</div>
               </div>
 
               <h1 className="display text-[88px] sm:text-[140px] lg:text-[180px] leading-[0.82] tracking-tight">
