@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/nav";
 
 export const Route = createFileRoute("/legal/privacidad")({
-  head: () => ({ meta: [{ title: "Privacidad · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Privacidad · 11Pulse" }] }),
   component: () => (
     <div className="min-h-screen flex flex-col">
       <Nav />
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/legal/privacidad")({
         <h1 className="display text-5xl">PRIVACIDAD</h1>
         <p className="text-muted-foreground mt-4">Última actualización: 2026.</p>
         <h2 className="display text-2xl mt-6">Quiénes somos</h2>
-        <p>Pulse11 es una red social de cartas de 11 ideales para fans del fútbol mayores de 14 años (LOPDGDD art. 8).</p>
+        <p>11Pulse es una red social de cartas de 11 ideales para fans del fútbol mayores de 14 años (LOPDGDD art. 8).</p>
         <h2 className="display text-2xl mt-6">Qué datos recogemos</h2>
         <ul className="list-disc pl-6">
           <li>Email (para magic link).</li>
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/legal/privacidad")({
         <h2 className="display text-2xl mt-6">Tus derechos</h2>
         <p>Puedes acceder, rectificar y borrar tus datos desde Ajustes. La eliminación anonimiza tus cartas.</p>
         <h2 className="display text-2xl mt-6">Contacto</h2>
-        <p>hola@pulse11.app</p>
+        <p>hola@11pulse.com</p>
       </article>
       <Footer />
     </div>

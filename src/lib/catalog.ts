@@ -1,4 +1,4 @@
-// Catálogo de slugs y constantes Pulse11. Sin imágenes oficiales.
+// Catálogo de slugs y constantes 11Pulse. Sin imágenes oficiales.
 
 export const AVATARS: { id: string; emoji: string; label: string }[] = [
   { id: 'av-01', emoji: '⚽', label: 'Balón' },

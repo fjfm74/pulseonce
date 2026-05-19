@@ -5,7 +5,7 @@ import { Nav, Footer } from "@/components/nav";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth/login")({
-  head: () => ({ meta: [{ title: "Entrar · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Entrar · 11Pulse" }] }),
   component: Login,
 });
 
@@ -119,7 +119,7 @@ function Login() {
             <Link to="/" className="font-mono text-xs uppercase tracking-widest hover:text-primary">← VOLVER</Link>
           </div>
           <div className="relative z-10">
-            <div className="tape mb-3">PULSE11</div>
+            <div className="tape mb-3">11PULSE</div>
             <h2 className="display text-7xl leading-[0.85] text-primary glow-primary">
               FICHA POR<br/>
               <span className="text-stroke text-transparent">EL VESTUARIO</span>

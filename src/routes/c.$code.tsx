@@ -11,9 +11,9 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/c/$code")({
   head: ({ params }) => ({ meta: [
-    { title: `Carta /${params.code} · Pulse11` },
-    { name: "description", content: "Una carta de 11 ideal en Pulse11." },
-    { property: "og:title", content: `Pulse11 · /${params.code}` },
+    { title: `Carta /${params.code} · 11Pulse` },
+    { name: "description", content: "Una carta de 11 ideal en 11Pulse." },
+    { property: "og:title", content: `11Pulse · /${params.code}` },
   ]}),
   component: CardView,
 });
@@ -212,7 +212,7 @@ function CardView() {
 
         {/* Big stencil mode footer */}
         <div className="mt-16 text-center">
-          <div className="stencil text-[18vw] sm:text-[10rem] leading-none">PULSE11</div>
+          <div className="stencil text-[18vw] sm:text-[10rem] leading-none">11PULSE</div>
           <div className="font-mono text-xs uppercase tracking-[0.4em] text-muted-foreground -mt-2">El football se vive en cartas</div>
         </div>
       </div>

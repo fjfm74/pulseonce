@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/lineups/new")({
   validateSearch: (s) => z.object({ mode: z.string().optional() }).parse(s),
-  head: () => ({ meta: [{ title: "Monta tu 11 · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Monta tu 11 · 11Pulse" }] }),
   component: NewLineup,
 });
 

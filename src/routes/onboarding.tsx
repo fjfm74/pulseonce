@@ -9,7 +9,7 @@ import { checkUsername, completeOnboarding, getMyProfile, listTeams } from "@/li
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/onboarding")({
-  head: () => ({ meta: [{ title: "Configura tu perfil · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Configura tu perfil · 11Pulse" }] }),
   component: Onboarding,
 });
 
@@ -242,7 +242,7 @@ function Onboarding() {
                 @{username || "tu_user"}
               </div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-center text-muted-foreground mt-2">
-                {age !== null ? `${age} AÑOS` : "EDAD ·"} · PULSE11
+                {age !== null ? `${age} AÑOS` : "EDAD ·"} · 11PULSE
               </div>
               <div className="border-t-2 border-dashed border-border mt-4 pt-3 text-center">
                 <span className="tape tape-accent">
