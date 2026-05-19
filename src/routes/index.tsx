@@ -49,8 +49,8 @@ function Landing() {
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-7 relative">
               <div className="flex items-center gap-3 mb-5">
-                <div className="tape">EDICIÓN BETA · ESPAÑA</div>
-                <div className="tape tape-magenta">14–18 AÑOS</div>
+                <div className="tape">EDICIÓN ESPAÑA</div>
+                <div className="tape tape-magenta">SOLO FÚTBOL</div>
               </div>
 
               <h1 className="display text-[88px] sm:text-[140px] lg:text-[180px] leading-[0.82] tracking-tight">
