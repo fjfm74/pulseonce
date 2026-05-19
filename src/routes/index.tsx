@@ -42,7 +42,7 @@ function Landing() {
             <div className="hidden sm:flex gap-4 text-muted-foreground">
               <span>EST. 2026</span>
               <span>BCN · MAD</span>
-              <span className="text-primary">v0.1 BETA</span>
+              <span className="text-primary">v0.1</span>
             </div>
           </div>
 
