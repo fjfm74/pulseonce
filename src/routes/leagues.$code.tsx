@@ -9,7 +9,7 @@ import { getCrest, getAvatar } from "@/lib/catalog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/leagues/$code")({
-  head: ({ params }) => ({ meta: [{ title: `Liga ${params.code} · Pulse11` }] }),
+  head: ({ params }) => ({ meta: [{ title: `Liga ${params.code} · 11Pulse` }] }),
   component: LeagueDetail,
 });
 

@@ -9,7 +9,7 @@ import { myLeagues, myLineupsList } from "@/lib/lineup.functions";
 import { getCrest, getAvatar } from "@/lib/catalog";
 
 export const Route = createFileRoute("/dashboard")({
-  head: () => ({ meta: [{ title: "Tu vestuario · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Tu vestuario · 11Pulse" }] }),
   component: Dashboard,
 });
 

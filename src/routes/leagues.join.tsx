@@ -7,7 +7,7 @@ import { joinLeague } from "@/lib/lineup.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/leagues/join")({
-  head: () => ({ meta: [{ title: "Unirme a liga · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Unirme a liga · 11Pulse" }] }),
   component: Join,
 });
 

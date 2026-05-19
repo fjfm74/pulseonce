@@ -62,7 +62,7 @@ export function Footer() {
   return (
     <footer className="mt-20 border-t-2 border-foreground bg-surface">
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-wrap gap-6 items-center justify-between text-xs uppercase tracking-wider text-muted-foreground">
-        <div className="display text-2xl text-foreground">PULSE11</div>
+        <div className="display text-2xl text-foreground">11PULSE</div>
         <div className="flex gap-4">
           <Link to="/legal/privacidad" className="hover:text-primary">Privacidad</Link>
           <Link to="/legal/terminos" className="hover:text-primary">Términos</Link>

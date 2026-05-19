@@ -24,7 +24,7 @@ const getPublicProfile = createServerFn({ method: "POST" })
   });
 
 export const Route = createFileRoute("/u/$username")({
-  head: ({ params }) => ({ meta: [{ title: `@${params.username} · Pulse11` }] }),
+  head: ({ params }) => ({ meta: [{ title: `@${params.username} · 11Pulse` }] }),
   component: Profile,
 });
 

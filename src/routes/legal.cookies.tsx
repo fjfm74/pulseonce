@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/nav";
 
 export const Route = createFileRoute("/legal/cookies")({
-  head: () => ({ meta: [{ title: "Cookies · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Cookies · 11Pulse" }] }),
   component: () => (
     <div className="min-h-screen flex flex-col">
       <Nav />

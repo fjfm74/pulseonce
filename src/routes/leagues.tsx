@@ -8,7 +8,7 @@ import { myLeagues } from "@/lib/lineup.functions";
 import { getCrest } from "@/lib/catalog";
 
 export const Route = createFileRoute("/leagues")({
-  head: () => ({ meta: [{ title: "Mis ligas · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Mis ligas · 11Pulse" }] }),
   component: Leagues,
 });
 

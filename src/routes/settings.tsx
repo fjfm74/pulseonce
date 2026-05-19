@@ -9,7 +9,7 @@ import { deleteMyAccount, getMyProfile, listTeams, updateProfileSettings } from 
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Ajustes · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Ajustes · 11Pulse" }] }),
   component: Settings,
 });
 
@@ -201,7 +201,7 @@ function Settings() {
                 @{me.data.username}
               </div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-center text-muted-foreground mt-2">
-                MIEMBRO PULSE11
+                MIEMBRO 11PULSE
               </div>
               <div className="border-t-2 border-dashed border-border mt-4 pt-3 text-center">
                 <span className="tape tape-accent">11 IDEAL</span>

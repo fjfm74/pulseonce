@@ -30,7 +30,7 @@ const getModeRanking = createServerFn({ method: "POST" })
   });
 
 export const Route = createFileRoute("/modes/$slug")({
-  head: ({ params }) => ({ meta: [{ title: `Modo ${params.slug} · Pulse11` }] }),
+  head: ({ params }) => ({ meta: [{ title: `Modo ${params.slug} · 11Pulse` }] }),
   component: ModePage,
 });
 

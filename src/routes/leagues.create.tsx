@@ -8,7 +8,7 @@ import { createLeague } from "@/lib/lineup.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/leagues/create")({
-  head: () => ({ meta: [{ title: "Crear liga · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Crear liga · 11Pulse" }] }),
   component: Create,
 });
 

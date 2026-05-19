@@ -5,7 +5,7 @@ import { Nav, Footer } from "@/components/nav";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: "Fijar contraseña · Pulse11" }] }),
+  head: () => ({ meta: [{ title: "Fijar contraseña · 11Pulse" }] }),
   component: ResetPassword,
 });
 

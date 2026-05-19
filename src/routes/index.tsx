@@ -4,7 +4,7 @@ import { Nav, Footer } from "@/components/nav";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pulse11 — Monta tu 11 ideal" },
+      { title: "11Pulse — Monta tu 11 ideal" },
       { name: "description", content: "Arma tu 11 del corazón, compártelo como carta y compite con tus amigos en ligas privadas. Sin apuestas, sin tóxicos. 14+." },
     ],
   }),
@@ -312,7 +312,7 @@ function Landing() {
             <div className="display text-[180px] leading-none text-primary">¡</div>
           </div>
           <div className="lg:col-span-8">
-            <div className="font-mono text-[11px] uppercase tracking-widest text-primary mb-3">MANIFIESTO PULSE11</div>
+            <div className="font-mono text-[11px] uppercase tracking-widest text-primary mb-3">MANIFIESTO 11PULSE</div>
             <p className="display text-4xl sm:text-6xl leading-[0.95]">
               SIN <span className="bg-primary text-primary-foreground px-2">APUESTAS</span>.<br/>
               SIN <span className="bg-accent text-accent-foreground px-2">TÓXICOS</span>.<br/>
