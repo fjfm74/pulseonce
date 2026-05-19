@@ -137,10 +137,13 @@
 .tape-magenta { background: var(--magenta); color: #fff; }
 .tape-accent  { background: var(--color-accent); color: #111; }
 
+:where(.sticker) {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
 .sticker {
   display: inline-flex; align-items: center; justify-content: center;
   border: 2px solid var(--color-foreground);
-  background: var(--color-background);
   font-family: var(--font-display);
   letter-spacing: 0.06em;
   padding: 0.4rem 0.8rem;
