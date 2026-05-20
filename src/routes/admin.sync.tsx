@@ -48,13 +48,13 @@ function AdminSync() {
         if (!res.isAdmin) { router.navigate({ to: "/dashboard" }); return; }
         setReady(true);
       } catch {
-        if (!cancelled) router.navigate({ to: "/auth/login" });
+        if (!cancelled) router.navigate({ to: "/auth/login", search: { redirect: "/admin/sync" } });
       }
     };
     // Wait for Supabase to hydrate the session from storage before checking.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (cancelled) return;
-      if (!session) { router.navigate({ to: "/auth/login" }); return; }
+      if (!session) { router.navigate({ to: "/auth/login", search: { redirect: "/admin/sync" } }); return; }
       verify();
     });
     // In case INITIAL_SESSION already fired, also try immediately.
