@@ -17,13 +17,14 @@ export const Route = createFileRoute("/admin/sync")({
   component: AdminSync,
 });
 
+// Free tier de api-sports.io solo permite temporadas 2022-2024.
 const LEAGUES = [
-  { id: 140, name: "LaLiga", season: 2025, estReq: 25 },
-  { id: 39,  name: "Premier League", season: 2025, estReq: 25 },
-  { id: 78,  name: "Bundesliga", season: 2025, estReq: 22 },
-  { id: 135, name: "Serie A", season: 2025, estReq: 22 },
-  { id: 61,  name: "Ligue 1", season: 2025, estReq: 20 },
-  { id: 2,   name: "Champions League", season: 2025, estReq: 20 },
+  { id: 140, name: "LaLiga", season: 2023, estReq: 25 },
+  { id: 39,  name: "Premier League", season: 2023, estReq: 25 },
+  { id: 78,  name: "Bundesliga", season: 2023, estReq: 22 },
+  { id: 135, name: "Serie A", season: 2023, estReq: 22 },
+  { id: 61,  name: "Ligue 1", season: 2023, estReq: 20 },
+  { id: 2,   name: "Champions League", season: 2023, estReq: 20 },
 ];
 
 type LogEntry = { ts: string; action: string; result: string };
