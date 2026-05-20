@@ -9,6 +9,7 @@ import { Pitch } from "@/components/pitch";
 import { FORMATION_LAYOUTS, FORMATIONS, lastName, type Formation } from "@/lib/catalog";
 import { listActiveModes } from "@/lib/profile.functions";
 import { listPlayersForMode } from "@/lib/players.functions";
+import { listHistoricalTeams } from "@/lib/admin-sync.functions";
 import { saveLineup } from "@/lib/lineup.functions";
 import { toast } from "sonner";
 
