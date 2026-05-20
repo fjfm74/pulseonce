@@ -40,17 +40,28 @@ function AdminSync() {
   const [log, setLog] = useState<LogEntry[]>([]);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) { router.navigate({ to: "/auth/login" }); return; }
+    let cancelled = false;
+    const verify = async () => {
       try {
         const res = await checkAdminFn();
+        if (cancelled) return;
         if (!res.isAdmin) { router.navigate({ to: "/dashboard" }); return; }
         setReady(true);
       } catch {
-        router.navigate({ to: "/dashboard" });
+        if (!cancelled) router.navigate({ to: "/auth/login" });
       }
-    })();
+    };
+    // Wait for Supabase to hydrate the session from storage before checking.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return;
+      if (!session) { router.navigate({ to: "/auth/login" }); return; }
+      verify();
+    });
+    // In case INITIAL_SESSION already fired, also try immediately.
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session && !cancelled) verify();
+    });
+    return () => { cancelled = true; subscription.unsubscribe(); };
   }, [router, checkAdminFn]);
 
   const stats = useQuery({
