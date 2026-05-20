@@ -264,6 +264,7 @@ export type Database = {
         Row: {
           birth_year: number | null
           created_at: string
+          historical_teams: string[]
           id: number
           name: string
           nationality: string | null
@@ -273,6 +274,7 @@ export type Database = {
         Insert: {
           birth_year?: number | null
           created_at?: string
+          historical_teams?: string[]
           id?: number
           name: string
           nationality?: string | null
@@ -282,6 +284,7 @@ export type Database = {
         Update: {
           birth_year?: number | null
           created_at?: string
+          historical_teams?: string[]
           id?: number
           name?: string
           nationality?: string | null
@@ -439,6 +442,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      append_historical_team: {
+        Args: { p_player_id: number; p_team_name: string }
+        Returns: undefined
+      }
       is_league_member: {
         Args: { _league_id: string; _user_id: string }
         Returns: boolean
