@@ -63,6 +63,7 @@ function NewLineup() {
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [saving, setSaving] = useState(false);
+  const [histTeamFilter, setHistTeamFilter] = useState<string>("");
 
   useEffect(() => { setAssignments({}); }, [formation]);
 
