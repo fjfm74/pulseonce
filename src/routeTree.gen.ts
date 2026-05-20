@@ -27,6 +27,7 @@ import { Route as LeaguesCodeRouteImport } from './routes/leagues.$code'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email.unsubscribe'
 import { Route as CCodeRouteImport } from './routes/c.$code'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AdminSyncRouteImport } from './routes/admin.sync'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -118,6 +119,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSyncRoute = AdminSyncRouteImport.update({
+  id: '/admin/sync',
+  path: '/admin/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/settings'
+    | '/admin/sync'
     | '/auth/login'
     | '/c/$code'
     | '/email/unsubscribe'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/settings'
+    | '/admin/sync'
     | '/auth/login'
     | '/c/$code'
     | '/email/unsubscribe'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/settings'
+    | '/admin/sync'
     | '/auth/login'
     | '/c/$code'
     | '/email/unsubscribe'
@@ -250,6 +262,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
+  AdminSyncRoute: typeof AdminSyncRoute
   AuthLoginRoute: typeof AuthLoginRoute
   CCodeRoute: typeof CCodeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -389,6 +402,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sync': {
+      id: '/admin/sync'
+      path: '/admin/sync'
+      fullPath: '/admin/sync'
+      preLoaderRoute: typeof AdminSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -414,6 +434,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
+  AdminSyncRoute: AdminSyncRoute,
   AuthLoginRoute: AuthLoginRoute,
   CCodeRoute: CCodeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,

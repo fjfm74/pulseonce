@@ -13,7 +13,7 @@ export const listPlayersForMode = createServerFn({ method: "POST" })
       // deterministic-ish pool of 22 based on ISO week
       const week = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
       const { data: all } = await supabaseAdmin.from("players")
-        .select("id, name, position, birth_year, nationality, team_id").order("id");
+        .select("id, name, position, birth_year, nationality, team_id, historical_teams").order("id");
       const players = all ?? [];
       // shuffle by week seed
       const seeded = players.map((p, i) => ({ p, k: ((week + 1) * 9301 + i * 49297) % 233280 }))
@@ -22,6 +22,6 @@ export const listPlayersForMode = createServerFn({ method: "POST" })
       return { selection_mode: 'pool', players: pool };
     }
     const { data: all } = await supabaseAdmin.from("players")
-      .select("id, name, position, birth_year, nationality, team_id").order("name");
+      .select("id, name, position, birth_year, nationality, team_id, historical_teams").order("name");
     return { selection_mode: 'open', players: all ?? [] };
   });

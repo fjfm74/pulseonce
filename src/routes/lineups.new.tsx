@@ -9,6 +9,7 @@ import { Pitch } from "@/components/pitch";
 import { FORMATION_LAYOUTS, FORMATIONS, lastName, type Formation } from "@/lib/catalog";
 import { listActiveModes } from "@/lib/profile.functions";
 import { listPlayersForMode } from "@/lib/players.functions";
+import { listHistoricalTeams } from "@/lib/admin-sync.functions";
 import { saveLineup } from "@/lib/lineup.functions";
 import { toast } from "sonner";
 
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/lineups/new")({
   component: NewLineup,
 });
 
-type Player = { id: number; name: string; position: 'GK'|'DF'|'MF'|'FW'; birth_year: number|null; nationality: string|null };
+type Player = { id: number; name: string; position: 'GK'|'DF'|'MF'|'FW'; birth_year: number|null; nationality: string|null; historical_teams?: string[] | null };
 
 const POS_COLORS: Record<string, string> = {
   GK: 'bg-accent text-accent-foreground',
@@ -41,8 +42,10 @@ function NewLineup() {
   const modesFn = useServerFn(listActiveModes);
   const playersFn = useServerFn(listPlayersForMode);
   const saveFn = useServerFn(saveLineup);
+  const histTeamsFn = useServerFn(listHistoricalTeams);
 
   const modes = useQuery({ queryKey: ['modes'], queryFn: modesFn, enabled: ready });
+  const histTeams = useQuery({ queryKey: ['hist-teams'], queryFn: histTeamsFn, enabled: ready });
 
   const [selectedModeSlug, setSelectedModeSlug] = useState<string>(search.mode ?? 'corazon');
   useEffect(() => { if (search.mode) setSelectedModeSlug(search.mode); }, [search.mode]);
@@ -60,6 +63,7 @@ function NewLineup() {
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [saving, setSaving] = useState(false);
+  const [histTeamFilter, setHistTeamFilter] = useState<string>("");
 
   useEffect(() => { setAssignments({}); }, [formation]);
 
@@ -72,9 +76,10 @@ function NewLineup() {
     return list.filter(p => {
       if (slotInfo && p.position !== slotInfo.position) return false;
       if (filter && !p.name.toLowerCase().includes(filter.toLowerCase())) return false;
+      if (histTeamFilter && !(p.historical_teams ?? []).includes(histTeamFilter)) return false;
       return true;
     });
-  }, [players.data, slotInfo, filter]);
+  }, [players.data, slotInfo, filter, histTeamFilter]);
 
   const assign = (playerId: number) => {
     if (!activeSlot) return;
@@ -296,13 +301,25 @@ function NewLineup() {
 
             {activeSlot && (
               <>
-                <div className="p-3 border-b-2 border-foreground">
+                <div className="p-3 border-b-2 border-foreground space-y-2">
                   <input
                     value={filter}
                     onChange={e => setFilter(e.target.value)}
                     placeholder="Buscar jugador…"
                     className="w-full bg-background border-2 border-foreground px-3 py-2 font-mono text-sm focus:border-primary outline-none"
                   />
+                  <select
+                    value={histTeamFilter}
+                    onChange={e => setHistTeamFilter(e.target.value)}
+                    className="w-full bg-background border-2 border-foreground px-3 py-2 font-mono text-xs uppercase focus:border-primary outline-none"
+                  >
+                    <option value="">Todos los equipos</option>
+                    {(histTeams.data ?? []).map(t => (
+                      <option key={t.team_name} value={t.team_name}>
+                        {t.team_name} ({t.player_count})
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 space-y-1">
                   {filtered.length === 0 && (
