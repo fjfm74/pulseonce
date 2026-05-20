@@ -32,24 +32,14 @@ export const getAdminStats = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context.userId);
-    const [{ count: players }, { count: teams }, { data: distinct }] = await Promise.all([
+    const [{ count: players }, { count: teams }, { data: rows }] = await Promise.all([
       supabaseAdmin.from("players").select("*", { count: "exact", head: true }),
       supabaseAdmin.from("teams").select("*", { count: "exact", head: true }),
-      supabaseAdmin.rpc("count_distinct_historical_teams" as never).then(
-        (r) => ({ data: r.data as number | null }),
-        () => ({ data: null }),
-      ),
+      supabaseAdmin.from("players").select("historical_teams"),
     ]);
-    // Fallback distinct count via SQL if RPC missing
-    let distinctTeams = distinct ?? 0;
-    if (!distinct) {
-      const { data: rows } = await supabaseAdmin
-        .from("players").select("historical_teams").not("historical_teams", "is", null);
-      const set = new Set<string>();
-      (rows ?? []).forEach((r) => (r.historical_teams as string[] | null)?.forEach((t) => t && set.add(t)));
-      distinctTeams = set.size;
-    }
-    return { players: players ?? 0, teams: teams ?? 0, distinctHistoricalTeams: distinctTeams };
+    const set = new Set<string>();
+    (rows ?? []).forEach((r) => (r.historical_teams as string[] | null)?.forEach((t) => t && set.add(t)));
+    return { players: players ?? 0, teams: teams ?? 0, distinctHistoricalTeams: set.size };
   });
 
 export const syncApiFootballLeague = createServerFn({ method: "POST" })
