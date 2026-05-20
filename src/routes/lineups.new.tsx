@@ -76,9 +76,10 @@ function NewLineup() {
     return list.filter(p => {
       if (slotInfo && p.position !== slotInfo.position) return false;
       if (filter && !p.name.toLowerCase().includes(filter.toLowerCase())) return false;
+      if (histTeamFilter && !(p.historical_teams ?? []).includes(histTeamFilter)) return false;
       return true;
     });
-  }, [players.data, slotInfo, filter]);
+  }, [players.data, slotInfo, filter, histTeamFilter]);
 
   const assign = (playerId: number) => {
     if (!activeSlot) return;
