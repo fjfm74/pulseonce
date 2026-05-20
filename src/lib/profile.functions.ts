@@ -12,7 +12,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
     const { supabase, userId } = context;
     const { data } = await supabase
       .from("profiles")
-      .select("id, username, birth_year, favorite_team_id, avatar_id, status")
+      .select("id, username, birth_year, favorite_team_id, avatar_id, status, email_notifications_enabled")
       .eq("id", userId)
       .maybeSingle();
     return data;
