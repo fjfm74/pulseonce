@@ -1,18 +1,22 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Nav, Footer } from "@/components/nav";
 import { sendMagicLink } from "@/lib/email.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth/login")({
+  validateSearch: (search) => z.object({ redirect: z.string().optional() }).parse(search),
   head: () => ({ meta: [{ title: "Entrar · 11Pulse" }] }),
   component: Login,
 });
 
 function Login() {
   const router = useRouter();
+  const { redirect } = Route.useSearch();
+  const nextRoute = redirect || "/dashboard";
   const [mode, setMode] = useState<"password" | "magic">("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +25,9 @@ function Login() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) router.navigate({ to: "/dashboard" });
+      if (data.session) router.navigate({ to: nextRoute });
     });
-  }, [router]);
+  }, [router, nextRoute]);
 
   const submitPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +38,7 @@ function Login() {
       toast.error("Email o contraseña incorrectos. Si esa cuenta entró antes con magic link, usa ‘Fijar / recuperar contraseña’.");
       return;
     }
-    router.navigate({ to: "/dashboard" });
+    router.navigate({ to: nextRoute });
   };
 
   const createAccount = async () => {
