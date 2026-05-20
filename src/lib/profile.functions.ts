@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendNotificationToProfile } from "./email-sender.server";
+import { welcomeEmail } from "./email-templates.server";
 
 // ---------- Profile bootstrap / read ----------
 export const getMyProfile = createServerFn({ method: "GET" })
@@ -10,7 +12,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
     const { supabase, userId } = context;
     const { data } = await supabase
       .from("profiles")
-      .select("id, username, birth_year, favorite_team_id, avatar_id, status")
+      .select("id, username, birth_year, favorite_team_id, avatar_id, status, email_notifications_enabled")
       .eq("id", userId)
       .maybeSingle();
     return data;
@@ -52,6 +54,12 @@ export const completeOnboarding = createServerFn({ method: "POST" })
       if (error.code === "23514") throw new Error("Debes tener al menos 14 años");
       throw new Error(error.message);
     }
+
+    // Welcome email (fire-and-forget, respects opt-out)
+    void sendNotificationToProfile(userId, (info) =>
+      welcomeEmail({ username: info.username, unsubscribeUrl: info.unsubscribeUrl }),
+    );
+
     return { ok: true };
   });
 

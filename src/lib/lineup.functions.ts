@@ -3,6 +3,8 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { genCode, genLeagueCode } from "./catalog";
+import { sendNotificationToProfile } from "./email-sender.server";
+import { forkNotificationEmail, pulseNotificationEmail } from "./email-templates.server";
 
 const slotSchema = z.object({ slot: z.string().min(1).max(10), player_id: z.number().int().positive() });
 const lineupInputSchema = z.object({
@@ -59,9 +61,33 @@ export const saveLineup = createServerFn({ method: "POST" })
       throw new Error(error.message);
     }
     if (data.forked_from) {
-      // bump source fork count
-      const { data: src } = await supabaseAdmin.from("lineups").select("forks_count").eq("id", data.forked_from).maybeSingle();
-      if (src) await supabaseAdmin.from("lineups").update({ forks_count: (src.forks_count ?? 0) + 1 }).eq("id", data.forked_from);
+      // bump source fork count + notify original author
+      const { data: src } = await supabaseAdmin
+        .from("lineups")
+        .select("forks_count, title, code, author_id")
+        .eq("id", data.forked_from)
+        .maybeSingle();
+      if (src) {
+        await supabaseAdmin
+          .from("lineups")
+          .update({ forks_count: (src.forks_count ?? 0) + 1 })
+          .eq("id", data.forked_from);
+        if (src.author_id && src.author_id !== userId) {
+          const { data: me } = await supabaseAdmin
+            .from("profiles").select("username").eq("id", userId).maybeSingle();
+          if (me?.username) {
+            void sendNotificationToProfile(src.author_id, (info) =>
+              forkNotificationEmail({
+                fromUsername: me.username,
+                originalTitle: src.title,
+                originalCode: src.code,
+                forkCode: inserted.code,
+                unsubscribeUrl: info.unsubscribeUrl,
+              }),
+            );
+          }
+        }
+      }
     }
     return { code: inserted.code };
   });
@@ -118,6 +144,28 @@ export const togglePulse = createServerFn({ method: "POST" })
     }
     const { error } = await supabase.from("pulses").insert({ lineup_id: data.lineup_id, user_id: userId });
     if (error) throw new Error(error.message.includes("propia") ? "No puedes hacer pulse a tu propia carta" : error.message);
+
+    // Notify lineup author (fire-and-forget)
+    const { data: lu } = await supabaseAdmin
+      .from("lineups")
+      .select("author_id, title, code, pulses_count")
+      .eq("id", data.lineup_id)
+      .maybeSingle();
+    if (lu?.author_id && lu.author_id !== userId) {
+      const { data: me } = await supabaseAdmin
+        .from("profiles").select("username").eq("id", userId).maybeSingle();
+      if (me?.username) {
+        void sendNotificationToProfile(lu.author_id, (info) =>
+          pulseNotificationEmail({
+            fromUsername: me.username,
+            lineupTitle: lu.title,
+            lineupCode: lu.code,
+            pulseCount: lu.pulses_count ?? 0,
+            unsubscribeUrl: info.unsubscribeUrl,
+          }),
+        );
+      }
+    }
     return { pulseado: true };
   });
 

@@ -303,6 +303,7 @@ export type Database = {
           avatar_id: string
           birth_year: number
           created_at: string
+          email_notifications_enabled: boolean
           favorite_team_id: number | null
           id: string
           status: Database["public"]["Enums"]["profile_status"]
@@ -313,6 +314,7 @@ export type Database = {
           avatar_id?: string
           birth_year: number
           created_at?: string
+          email_notifications_enabled?: boolean
           favorite_team_id?: number | null
           id: string
           status?: Database["public"]["Enums"]["profile_status"]
@@ -323,6 +325,7 @@ export type Database = {
           avatar_id?: string
           birth_year?: number
           created_at?: string
+          email_notifications_enabled?: boolean
           favorite_team_id?: number | null
           id?: string
           status?: Database["public"]["Enums"]["profile_status"]

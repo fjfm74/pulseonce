@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Nav, Footer } from "@/components/nav";
 import { AVATARS } from "@/lib/catalog";
 import { deleteMyAccount, getMyProfile, listTeams, updateProfileSettings } from "@/lib/profile.functions";
+import { sendTestEmail, updateEmailNotifications } from "@/lib/email.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings")({
@@ -25,11 +26,14 @@ function Settings() {
   const teamsFn = useServerFn(listTeams);
   const updFn = useServerFn(updateProfileSettings);
   const delFn = useServerFn(deleteMyAccount);
+  const emailToggleFn = useServerFn(updateEmailNotifications);
+  const testEmailFn = useServerFn(sendTestEmail);
 
   const me = useQuery({ queryKey: ['me'], queryFn: meFn, enabled: ready });
   const teams = useQuery({ queryKey: ['teams'], queryFn: teamsFn, enabled: ready });
   const [avatar, setAvatar] = useState<string>("av-01");
   const [team, setTeam] = useState<number | null>(null);
+  const [emailsOn, setEmailsOn] = useState(true);
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [danger, setDanger] = useState(false);
@@ -38,6 +42,8 @@ function Settings() {
     if (me.data) {
       setAvatar(me.data.avatar_id);
       setTeam(me.data.favorite_team_id);
+      const eo = (me.data as unknown as { email_notifications_enabled?: boolean }).email_notifications_enabled;
+      setEmailsOn(eo ?? true);
     }
   }, [me.data]);
 
@@ -140,6 +146,36 @@ function Settings() {
                 <option value="">— SIN EQUIPO —</option>
                 {(teams.data ?? []).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
               </select>
+            </div>
+
+            {/* Email notifications */}
+            <div className="border-2 border-foreground bg-surface p-6 shadow-brutal">
+              <div className="display text-3xl text-accent mb-3">EMAILS</div>
+              <p className="text-sm text-muted-foreground mb-3">Avisos cuando alguien pulsea o forkea tu 11, más el welcome. Los emails críticos (acceso, recuperación) siempre llegan.</p>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={emailsOn}
+                  onChange={async (e) => {
+                    const v = e.target.checked;
+                    setEmailsOn(v);
+                    try { await emailToggleFn({ data: { enabled: v } }); toast.success(v ? "Emails activados" : "Emails pausados"); }
+                    catch (err) { setEmailsOn(!v); toast.error((err as Error).message); }
+                  }}
+                  className="w-5 h-5 accent-primary"
+                />
+                <span className="display text-xl">RECIBIR EMAILS DE 11PULSE</span>
+              </label>
+              <button
+                type="button"
+                onClick={async () => {
+                  try { const r = await testEmailFn(); toast.success(`Email de prueba enviado a ${r.sentTo}`); }
+                  catch (err) { toast.error((err as Error).message); }
+                }}
+                className="mt-4 font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-primary"
+              >
+                ENVIARME UN EMAIL DE PRUEBA →
+              </button>
             </div>
 
             <button onClick={save} disabled={busy} className="btn-hero w-full disabled:opacity-30">
