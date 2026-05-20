@@ -24,6 +24,7 @@ import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
 import { Route as LeaguesJoinRouteImport } from './routes/leagues.join'
 import { Route as LeaguesCreateRouteImport } from './routes/leagues.create'
 import { Route as LeaguesCodeRouteImport } from './routes/leagues.$code'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email.unsubscribe'
 import { Route as CCodeRouteImport } from './routes/c.$code'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 
@@ -102,6 +103,11 @@ const LeaguesCodeRoute = LeaguesCodeRouteImport.update({
   path: '/$code',
   getParentRoute: () => LeaguesRoute,
 } as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CCodeRoute = CCodeRouteImport.update({
   id: '/c/$code',
   path: '/c/$code',
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/c/$code': typeof CCodeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/leagues/$code': typeof LeaguesCodeRoute
   '/leagues/create': typeof LeaguesCreateRoute
   '/leagues/join': typeof LeaguesJoinRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/email/unsubscribe'
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/email/unsubscribe'
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/auth/login'
     | '/c/$code'
+    | '/email/unsubscribe'
     | '/leagues/$code'
     | '/leagues/create'
     | '/leagues/join'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   CCodeRoute: typeof CCodeRoute
+  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   LegalCookiesRoute: typeof LegalCookiesRoute
   LegalPrivacidadRoute: typeof LegalPrivacidadRoute
   LegalTerminosRoute: typeof LegalTerminosRoute
@@ -355,6 +368,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeaguesCodeRouteImport
       parentRoute: typeof LeaguesRoute
     }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/c/$code': {
       id: '/c/$code'
       path: '/c/$code'
@@ -396,6 +416,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   AuthLoginRoute: AuthLoginRoute,
   CCodeRoute: CCodeRoute,
+  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   LegalCookiesRoute: LegalCookiesRoute,
   LegalPrivacidadRoute: LegalPrivacidadRoute,
   LegalTerminosRoute: LegalTerminosRoute,
@@ -406,3 +427,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -148,6 +148,36 @@ function Settings() {
               </select>
             </div>
 
+            {/* Email notifications */}
+            <div className="border-2 border-foreground bg-surface p-6 shadow-brutal">
+              <div className="display text-3xl text-accent mb-3">EMAILS</div>
+              <p className="text-sm text-muted-foreground mb-3">Avisos cuando alguien pulsea o forkea tu 11, más el welcome. Los emails críticos (acceso, recuperación) siempre llegan.</p>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={emailsOn}
+                  onChange={async (e) => {
+                    const v = e.target.checked;
+                    setEmailsOn(v);
+                    try { await emailToggleFn({ data: { enabled: v } }); toast.success(v ? "Emails activados" : "Emails pausados"); }
+                    catch (err) { setEmailsOn(!v); toast.error((err as Error).message); }
+                  }}
+                  className="w-5 h-5 accent-primary"
+                />
+                <span className="display text-xl">RECIBIR EMAILS DE 11PULSE</span>
+              </label>
+              <button
+                type="button"
+                onClick={async () => {
+                  try { const r = await testEmailFn(); toast.success(`Email de prueba enviado a ${r.sentTo}`); }
+                  catch (err) { toast.error((err as Error).message); }
+                }}
+                className="mt-4 font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-primary"
+              >
+                ENVIARME UN EMAIL DE PRUEBA →
+              </button>
+            </div>
+
             <button onClick={save} disabled={busy} className="btn-hero w-full disabled:opacity-30">
               {busy ? "GUARDANDO…" : "GUARDAR CAMBIOS"}
             </button>
