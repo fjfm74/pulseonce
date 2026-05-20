@@ -87,6 +87,10 @@ export const syncApiFootballLeague = createServerFn({ method: "POST" })
           break;
         }
         json = await res.json();
+        if (json.errors && !Array.isArray(json.errors) && Object.keys(json.errors).length > 0) {
+          errors.push(`API: ${JSON.stringify(json.errors)}`);
+          break;
+        }
       } catch (e) {
         errors.push(`Page ${page}: ${(e as Error).message}`);
         break;
