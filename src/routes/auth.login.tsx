@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { Nav, Footer } from "@/components/nav";
+import { sendMagicLink } from "@/lib/email.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth/login")({
@@ -90,16 +92,18 @@ function Login() {
     toast.success("Te he enviado un email para fijar o recuperar tu contraseña");
   };
 
+  const sendMagicFn = useServerFn(sendMagicLink);
   const submitMagic = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading("magic");
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.origin + "/onboarding" },
-    });
-    setLoading("idle");
-    if (error) { toast.error(error.message); return; }
-    setSent(true);
+    try {
+      await sendMagicFn({ data: { email } });
+      setSent(true);
+    } catch (err) {
+      toast.error((err as Error).message);
+    } finally {
+      setLoading("idle");
+    }
   };
 
   return (
@@ -247,7 +251,7 @@ function Login() {
                     {loading === "magic" ? "ENVIANDO…" : "MANDAR MAGIC LINK →"}
                   </button>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    Aviso: el email gratis de Supabase puede tardar / caer en spam. Si urge, usa contraseña.
+                    Te mandamos un enlace de un solo uso desde <strong className="text-foreground">hola@11pulse.com</strong>. Caduca en 1 hora.
                   </p>
                 </form>
               )}
