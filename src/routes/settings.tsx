@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Nav, Footer } from "@/components/nav";
 import { AVATARS } from "@/lib/catalog";
 import { deleteMyAccount, getMyProfile, listTeams, updateProfileSettings } from "@/lib/profile.functions";
+import { sendTestEmail, updateEmailNotifications } from "@/lib/email.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings")({
@@ -25,11 +26,14 @@ function Settings() {
   const teamsFn = useServerFn(listTeams);
   const updFn = useServerFn(updateProfileSettings);
   const delFn = useServerFn(deleteMyAccount);
+  const emailToggleFn = useServerFn(updateEmailNotifications);
+  const testEmailFn = useServerFn(sendTestEmail);
 
   const me = useQuery({ queryKey: ['me'], queryFn: meFn, enabled: ready });
   const teams = useQuery({ queryKey: ['teams'], queryFn: teamsFn, enabled: ready });
   const [avatar, setAvatar] = useState<string>("av-01");
   const [team, setTeam] = useState<number | null>(null);
+  const [emailsOn, setEmailsOn] = useState(true);
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [danger, setDanger] = useState(false);
@@ -38,6 +42,8 @@ function Settings() {
     if (me.data) {
       setAvatar(me.data.avatar_id);
       setTeam(me.data.favorite_team_id);
+      const eo = (me.data as unknown as { email_notifications_enabled?: boolean }).email_notifications_enabled;
+      setEmailsOn(eo ?? true);
     }
   }, [me.data]);
 
