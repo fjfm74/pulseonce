@@ -19,7 +19,7 @@ export const Route = createFileRoute("/lineups/new")({
   component: NewLineup,
 });
 
-type Player = { id: number; name: string; position: 'GK'|'DF'|'MF'|'FW'; birth_year: number|null; nationality: string|null };
+type Player = { id: number; name: string; position: 'GK'|'DF'|'MF'|'FW'; birth_year: number|null; nationality: string|null; historical_teams?: string[] | null };
 
 const POS_COLORS: Record<string, string> = {
   GK: 'bg-accent text-accent-foreground',
