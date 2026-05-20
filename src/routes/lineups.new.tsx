@@ -301,13 +301,25 @@ function NewLineup() {
 
             {activeSlot && (
               <>
-                <div className="p-3 border-b-2 border-foreground">
+                <div className="p-3 border-b-2 border-foreground space-y-2">
                   <input
                     value={filter}
                     onChange={e => setFilter(e.target.value)}
                     placeholder="Buscar jugador…"
                     className="w-full bg-background border-2 border-foreground px-3 py-2 font-mono text-sm focus:border-primary outline-none"
                   />
+                  <select
+                    value={histTeamFilter}
+                    onChange={e => setHistTeamFilter(e.target.value)}
+                    className="w-full bg-background border-2 border-foreground px-3 py-2 font-mono text-xs uppercase focus:border-primary outline-none"
+                  >
+                    <option value="">Todos los equipos</option>
+                    {(histTeams.data ?? []).map(t => (
+                      <option key={t.team_name} value={t.team_name}>
+                        {t.team_name} ({t.player_count})
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 space-y-1">
                   {filtered.length === 0 && (
