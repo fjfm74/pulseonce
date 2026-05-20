@@ -54,6 +54,12 @@ export const completeOnboarding = createServerFn({ method: "POST" })
       if (error.code === "23514") throw new Error("Debes tener al menos 14 años");
       throw new Error(error.message);
     }
+
+    // Welcome email (fire-and-forget, respects opt-out)
+    void sendNotificationToProfile(userId, (info) =>
+      welcomeEmail({ username: info.username, unsubscribeUrl: info.unsubscribeUrl }),
+    );
+
     return { ok: true };
   });
 
