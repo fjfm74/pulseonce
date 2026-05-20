@@ -42,8 +42,10 @@ function NewLineup() {
   const modesFn = useServerFn(listActiveModes);
   const playersFn = useServerFn(listPlayersForMode);
   const saveFn = useServerFn(saveLineup);
+  const histTeamsFn = useServerFn(listHistoricalTeams);
 
   const modes = useQuery({ queryKey: ['modes'], queryFn: modesFn, enabled: ready });
+  const histTeams = useQuery({ queryKey: ['hist-teams'], queryFn: histTeamsFn, enabled: ready });
 
   const [selectedModeSlug, setSelectedModeSlug] = useState<string>(search.mode ?? 'corazon');
   useEffect(() => { if (search.mode) setSelectedModeSlug(search.mode); }, [search.mode]);
